@@ -1,11 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
-using System.Drawing;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Forms;
 
 namespace BudgetManagement
@@ -22,6 +15,24 @@ namespace BudgetManagement
         private Button updateTransactionButton;
         private ListBox transactionsListBox;
         private Label totalBudgetLabel;
+
+        public void RemoveText(object sender, EventArgs e)
+        {
+            var send = (TextBox)sender;
+            string text = send.Tag.ToString();
+            if (send.Text == text)
+            {
+                send.Text = "";
+            }
+        }
+        public void AddText(object sender, EventArgs e)
+        {
+            var send = (TextBox)sender;
+            string text = send.Tag.ToString();
+            if (string.IsNullOrWhiteSpace(send.Text))
+                send.Text = text;
+        }
+
         public BudgetForm()
         {
             this.Text = "Управление бюджетом";
@@ -30,13 +41,21 @@ namespace BudgetManagement
             descriptionTextBox = new TextBox
             {
                 Location = new System.Drawing.Point(10, 10),
-                Width = 150
+                Width = 150,
+                Text = "Описание",
+                Tag = "Описание"
             };
+            descriptionTextBox.GotFocus += new EventHandler(RemoveText);
+            descriptionTextBox.LostFocus += new EventHandler(AddText);
             amountTextBox = new TextBox
             {
                 Location = new System.Drawing.Point(170, 10),
-                Width = 100
+                Width = 100,
+                Text = "Сумма",
+                Tag = "Сумма"
             };
+            amountTextBox.GotFocus += new EventHandler(RemoveText);
+            amountTextBox.LostFocus += new EventHandler(AddText);
             typeComboBox = new ComboBox
             {
                 Location = new System.Drawing.Point(280, 10),
