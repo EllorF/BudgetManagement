@@ -108,6 +108,7 @@ namespace BudgetManagement
             this.Controls.Add(updateTransactionButton);
             this.Controls.Add(transactionsListBox);
             this.Controls.Add(totalBudgetLabel);
+            typeComboBox.Text = "Доход";
             budgetManager = new BudgetManager();
             UpdateTransactionsList();
             UpdateTotalBudget();
@@ -134,7 +135,7 @@ namespace BudgetManagement
                 return;
             }
             decimal amount;
-            if (!decimal.TryParse(amountTextBox.Text, out amount) || amount < 0)
+            if (!decimal.TryParse(amountTextBox.Text, out amount) || amount <= 0)
             {
                 MessageBox.Show("Неверная сумма!");
                 return;
@@ -147,8 +148,8 @@ namespace BudgetManagement
             try
             {
                 budgetManager.AddTransaction(newTransaction);
-                descriptionTextBox.Clear();
-                amountTextBox.Clear();
+                descriptionTextBox.Text = "Описание";
+                amountTextBox.Text = "Сумма";
                 UpdateTransactionsList();
                 UpdateTotalBudget();
             }
@@ -169,7 +170,7 @@ namespace BudgetManagement
             if (parts.Length >= 2)
             {
                 string description = parts[0].Trim();
-                string amount = parts[1].Split(' ')[0];
+                string amount = parts[1].Split('(')[1].Replace(" руб.)", "");
                 decimal amountValue;
                 if (decimal.TryParse(amount, out amountValue))
                 {
@@ -203,7 +204,7 @@ namespace BudgetManagement
             if (parts.Length >= 2)
             {
                 string description = parts[0].Trim();
-                string amount = parts[1].Split(' ')[0];
+                string amount = parts[1].Split('(')[1].Replace(" руб.)", "");
                 decimal amountValue;
                 if (decimal.TryParse(amount, out amountValue))
                 {
@@ -218,7 +219,7 @@ namespace BudgetManagement
                             return;
                         }
                         decimal newAmount;
-                        if (!decimal.TryParse(amountTextBox.Text, out newAmount) || newAmount < 0)
+                        if (!decimal.TryParse(amountTextBox.Text, out newAmount) || newAmount <= 0)
                         {
                             MessageBox.Show("Неверная сумма!");
                             return;
